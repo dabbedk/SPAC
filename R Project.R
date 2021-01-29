@@ -18,6 +18,10 @@ str_extract(clean.df[[3]], '[[:punct:]][[:upper:]]{3,}[[:punct:]]') %>%
 
 merged.df$SPAC.Ticker = SPACtickers
 
+merged.df %>%
+  mutate(Merger.Timeline.in.Days = Completion.Date - IPO.Date) %>%
+  relocate(Merger.Timeline.in.Days, .after = IPO.Date) -> merged.df
+
 
 # Clean up and combine stock price files into single file ----
 
@@ -43,7 +47,23 @@ cleanup <- function(x) {
 
 cleanList = lapply(files, cleanup)
 
-DailySP = do.call('rbind', cleanList)
+dailySP = do.call('rbind', cleanList)
+
+# add day and gain/loss columns
+
+merged.df %>%
+  select(1,4,5) -> dates
+
+dailySP <- merge(dailySP, dates, by.x = 'Ticker', by.y = 'Post-SPAC.Ticker') %>%
+  mutate(Status = ifelse(Date < Completion.Date, 'Pre-Merger', 'Post-Merger')) %>%
+  group_by(Ticker, Status) %>%
+  mutate(Day = row_number(Date)) %>%
+  mutate(GainLoss.byPercent =
+           case_when(Day == 1 ~ 0,
+                     Day > 1 ~ round(
+                       (((Close - Close[Day == 1]) / Close[Day == 1])* 100)
+                       , 2)
+           ))
 
 
 # Clean up and combine Indexes into single file ----
@@ -52,8 +72,8 @@ setwd('../indexes')
 
 indexes = list.files()
   
-IndexList = lapply(indexes, cleanup)
+indexList = lapply(indexes, cleanup)
   
-IndexDailySP = do.call('rbind', IndexList)
+indexDailySP = do.call('rbind', indexList)
 
 
