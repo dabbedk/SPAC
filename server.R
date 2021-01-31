@@ -4,7 +4,48 @@ shinyServer(function(input, output){
     output$wordCloud <- renderPlot({
         
         wordcloud(wordCount$word, wordCount$freq, min.freq = 1, color = brewer.pal(8, 'Dark2'),
-                  random.order = F, random.color = F, scale = c(4, .8))
+                  random.order = F, random.color = F, scale = c(4, 1))
+        
+    })
+    
+    output$SPACVolume <- renderPlot({
+        
+        ggplot(data = dailySP) +
+            geom_point(aes(x = Date, y = Volume), stat = 'identity', size = 2) +
+            theme_bw() +
+            labs(x = 'Year', y = 'Volume', title = 'Daily Trading Volume') +
+            scale_y_continuous(labels = scales::comma)
+        
+    })
+    
+    output$dailySPACIndex <- renderPlot({
+        
+        ggplot(data = equalWeight.df, aes(x = Date)) +
+            geom_line(aes(y = SPAC.Index), stat = 'identity') +
+            theme_bw() +
+            labs(x = 'Date',
+                 y = 'Closing Price',
+                 title = 'My SPAC Index Performance',
+                 subtitle = 'Equal Weighted Index')
+        
+    })
+    
+    output$mergerComparison <- renderPlot({
+        
+        equalWeight.df$Status <- factor(equalWeight.df$Status, levels = c('Pre-Merger', 'Post-Merger'))  
+        
+        equalWeight.df %>%
+            group_by(Status, Day) %>%
+            summarize(Price = sum(Close)) %>%
+            ggplot() +
+            theme_bw() +
+            labs(x = 'Day',
+                 y = 'Closing Price',
+                 title = 'Comparing Index Pre- vs Post-Merger',
+                 subtitle = 'Equal Weighted Index') +
+            geom_smooth(aes(x = Day, y = Price, color = Status), stat= 'identity') +
+            scale_color_manual(values = c('forestgreen', 'red')) +
+            facet_grid( ~ Status)
         
     })
     
@@ -53,11 +94,9 @@ shinyServer(function(input, output){
             ggplot(aes(x = Date, y = Close, color = Status)) +
             geom_line(stat = 'identity') +
             scale_color_hue(l = 50) +
-            labs(x = 'Date', y = 'Closing Price', title = 'Price Movement Pre VS Post Merger') +
-            theme(axis.title = element_text('Price Movement Pre- vs Post-Merger'),
-                  axis.title.x = element_text('Date'),
-                  axis.title.y = element_text('Closing Price'))
-        
+            theme_bw() +
+            labs(x = 'Date', y = 'Closing Price', title = 'Price Movement Pre- vs Post-Merger') +
+            scale_y_continuous(labels = scales::dollar)
         
     })
 

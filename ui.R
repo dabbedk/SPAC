@@ -9,14 +9,17 @@ shinyUI(dashboardPage(
         
         menuItem('General', tabName = 'general', icon = icon('search-dollar')),
         
-        menuItem('Price Movement', tabName = 'price', icon = icon('poll'))
+        menuItem('Price Movement', tabName = 'price', icon = icon('poll')),
+        
+        menuItem('SPAC Index', tabName = 'spacIndex', icon = icon('layer-group'))
         )
     ),
     
     dashboardBody(
         tabItems(
             tabItem(tabName = 'intro',
-                    'about me and intro to project'),
+                    'about me and intro to project'
+                    ),
             
             tabItem(tabName = 'general',
                     
@@ -27,7 +30,10 @@ shinyUI(dashboardPage(
                     
                     
                     
-                    fluidRow(box(plotOutput('wordCloud', height = 520), height = 532, width = 12)),
+                    fluidRow(
+                        box(plotOutput('SPACVolume', height = 505), height = 520, width = 6),
+                        box(plotOutput('wordCloud', height = 520), height = 520, width = 6)
+                    ),
                     
                     h3('Merger Timelines'),
                     fluidRow(box(valueBoxOutput('minTime'),
@@ -44,8 +50,18 @@ shinyUI(dashboardPage(
                     fluidRow(box(selectizeInput(inputId = 'Ticker',
                                                 label = 'Ticker Symbol',
                                                 choices = unique(dailySP$Ticker))))
-         
-            )
+            ),
+            
+            tabItem(tabName = 'spacIndex',
+                    
+                    fluidRow(box(plotOutput('dailySPACIndex'),
+                                 br(),
+                                 br(),
+                                  plotOutput('mergerComparison'), height = 900, width = 12))
+                   # fluidRow(
+                   #     box(plotOutput('dailySPACIndex', height = 520), height = 520, width = 6),
+                   #     box(plotOutput('mergerComparison'), height = 520), height = 520, width = 6)
+                    )
         )
     )
 )
