@@ -44,8 +44,8 @@ shinyUI(dashboardPage(
         
             tabItem(tabName = 'price',
 
-                    fluidRow(box(plotOutput('dailyReturns', height = 350),
-                                 height = 400, width = 12)),
+                    fluidRow(box(plotOutput('dailyReturns'),
+                                 width = 12)),
                     
                     fluidRow(box(selectizeInput(inputId = 'Ticker',
                                                 label = 'Ticker Symbol',
@@ -54,10 +54,17 @@ shinyUI(dashboardPage(
             
             tabItem(tabName = 'spacIndex',
                     
-                    fluidRow(box(plotOutput('dailySPACIndex'),
+                    fluidRow(box(plotOutput('dailySPACIndex'), width = 12)),
                                  br(),
                                  br(),
-                                  plotOutput('mergerComparison'), height = 900, width = 12))
+                    fluidRow(box(plotOutput('mergerComparison'), width = 8),
+                                 column(width = 4,
+                                        box(valueBoxOutput('postMax'), title = 'Highest Price', width = NULL, background = 'green'),
+                                        box(valueBoxOutput('postMed'), title = 'Median Price', width = NULL, background = 'yellow'),
+                                        box(valueBoxOutput('postMin'), title = 'Lowest Price', width = NULL, background = 'red')
+                                        )
+                    )
+
                    # fluidRow(
                    #     box(plotOutput('dailySPACIndex', height = 520), height = 520, width = 6),
                    #     box(plotOutput('mergerComparison'), height = 520), height = 520, width = 6)

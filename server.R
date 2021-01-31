@@ -26,7 +26,8 @@ shinyServer(function(input, output){
             labs(x = 'Date',
                  y = 'Closing Price',
                  title = 'My SPAC Index Performance',
-                 subtitle = 'Equal Weighted Index')
+                 subtitle = 'Equal Weighted Index')+
+            scale_y_continuous(labels = scales::dollar)
         
     })
     
@@ -36,18 +37,42 @@ shinyServer(function(input, output){
         
         equalWeight.df %>%
             group_by(Status, Day) %>%
-            summarize(Price = sum(Close)) %>%
+            filter(Day < 400) %>%
+            summarize(Price = sum(Close)/n()) %>%
             ggplot() +
             theme_bw() +
             labs(x = 'Day',
-                 y = 'Closing Price',
-                 title = 'Comparing Index Pre- vs Post-Merger',
-                 subtitle = 'Equal Weighted Index') +
+                 y = 'Average Price',
+                 title = 'Comparing Average Stock Prices',
+                 subtitle = 'Pre- vs Post-Merger') +
             geom_smooth(aes(x = Day, y = Price, color = Status), stat= 'identity') +
-            scale_color_manual(values = c('forestgreen', 'red')) +
+            scale_color_manual(values = c('cadetblue', 'darkslategray'))+
+            scale_y_continuous(labels = scales::dollar) +
             facet_grid( ~ Status)
         
     })
+    
+    output$postMin <- renderInfoBox({
+
+        min_price = round(min(equalWeight.df$Close[equalWeight.df$Status == 'Post-Merger']), 2)
+        min_company = equalWeight.df$Ticker[equalWeight.df$Close == min_price]
+        valueBox(min_price, min_company, icon = icon('thumbs-down'), color = 'red')
+    })
+    
+    output$postMed <- renderInfoBox({
+        
+        med_price = median(equalWeight.df$Close[equalWeight.df$Status == 'Post-Merger'])
+        valueBox(med_price, '', icon = icon('dollar-sign'), color = 'yellow')
+    })
+    
+    output$postMax <- renderInfoBox({
+        
+        max_price = max(equalWeight.df$Close[equalWeight.df$Status == 'Post-Merger'])
+        max_company = equalWeight.df$Ticker[equalWeight.df$Close == max_price]
+        valueBox(round(max_price, 2), max_company, icon = icon('thumbs-up'), color = 'green')
+    })
+    
+    
     
     
     output$minSize <- renderInfoBox({

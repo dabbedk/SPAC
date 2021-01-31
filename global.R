@@ -113,3 +113,4 @@ indexDailySP %>%
 
 inner_join(equalWeight.df, indexDailySP, by = 'Date') -> equalWeight.df
 
+
