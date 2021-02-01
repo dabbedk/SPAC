@@ -5,13 +5,15 @@ shinyUI(dashboardPage(
     
     dashboardSidebar(
         sidebarMenu(
-        menuItem('Intro', tabName = 'intro', icon = icon('info-circle')),
-        
-        menuItem('General', tabName = 'general', icon = icon('search-dollar')),
-        
-        menuItem('Price Movement', tabName = 'price', icon = icon('poll')),
-        
-        menuItem('SPAC Index', tabName = 'spacIndex', icon = icon('layer-group'))
+            menuItem('Intro', tabName = 'intro', icon = icon('info-circle')),
+            
+            menuItem('General', tabName = 'general', icon = icon('search-dollar')),
+            
+            menuItem('Price Movement', tabName = 'price', icon = icon('poll')),
+            
+            menuItem('SPAC Index', tabName = 'spacIndex', icon = icon('layer-group')),
+            
+            menuItem('Index Comparison', tabName = 'indexComp', icon = icon('layer-group'))
         )
     ),
     
@@ -19,7 +21,7 @@ shinyUI(dashboardPage(
         tabItems(
             tabItem(tabName = 'intro',
                     'about me and intro to project'
-                    ),
+            ),
             
             tabItem(tabName = 'general',
                     
@@ -39,11 +41,11 @@ shinyUI(dashboardPage(
                     fluidRow(box(valueBoxOutput('minTime'),
                                  valueBoxOutput('avgTime'),
                                  valueBoxOutput('maxTime'), height = 120, width = 12, status = 'warning'))
-                    ),
+            ),
             
-        
+            
             tabItem(tabName = 'price',
-
+                    
                     fluidRow(box(plotOutput('dailyReturns'),
                                  width = 12)),
                     
@@ -55,19 +57,22 @@ shinyUI(dashboardPage(
             tabItem(tabName = 'spacIndex',
                     
                     fluidRow(box(plotOutput('dailySPACIndex'), width = 12)),
-                                 br(),
-                                 br(),
+                    br(),
+                    br(),
                     fluidRow(box(plotOutput('mergerComparison'), width = 8),
-                                 column(width = 4,
-                                        box(valueBoxOutput('postMax'), title = 'Highest Price', width = NULL, background = 'green'),
-                                        box(valueBoxOutput('postMed'), title = 'Median Price', width = NULL, background = 'yellow'),
-                                        box(valueBoxOutput('postMin'), title = 'Lowest Price', width = NULL, background = 'red')
-                                        )
+                             column(width = 4,
+                                    box(valueBoxOutput('postMax'), title = 'Highest Price', width = NULL, background = 'green'),
+                                    box(valueBoxOutput('postMed'), title = 'Median Price', width = NULL, background = 'yellow'),
+                                    box(valueBoxOutput('postMin'), title = 'Lowest Price', width = NULL, background = 'red')
+                             )
                     )
 
-                   # fluidRow(
-                   #     box(plotOutput('dailySPACIndex', height = 520), height = 520, width = 6),
-                   #     box(plotOutput('mergerComparison'), height = 520), height = 520, width = 6)
+            ),
+            
+            tabItem(tabName = 'indexComp',
+                    
+                    fluidRow(box(plotOutput('indexComps'),
+                                 width = 12))
                     )
         )
     )

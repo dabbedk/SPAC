@@ -104,13 +104,27 @@ wordCount <- wordCount %>%
 
 dailySP %>%
   filter(Date >= max(dailySP$IPO.Date)) %>%
+  select(-Volume) %>%
   group_by(Date) %>%
   mutate(SPAC.Index = sum(Close)) -> equalWeight.df
 
-indexDailySP %>% 
-  select(-Volume) %>% 
-  pivot_wider(names_from = Ticker, values_from = Close) -> indexDailySP
 
-inner_join(equalWeight.df, indexDailySP, by = 'Date') -> equalWeight.df
+# Create comparisondf
 
+equalWeight.df %>%
+  select(Date, SPAC.Index) %>%
+  unique() -> Comparison.df
 
+indexDailySP %>%
+  select(-Volume) %>%
+  pivot_wider(names_from = 'Ticker', values_from = 'Close') -> indexDailySP
+
+inner_join(Comparison.df, indexDailySP, by = 'Date') -> Comparison.df
+
+Comparison.df %>%
+  mutate(SPAC.Index = (SPAC.Index - min(Comparison.df$SPAC.Index)) / (max(Comparison.df$SPAC.Index) - min(Comparison.df$SPAC.Index)),
+         DJI = (DJI - min(Comparison.df$DJI)) / (max(Comparison.df$DJI) - min(Comparison.df$DJI)),
+         GSPC = (GSPC - min(Comparison.df$GSPC)) / (max(Comparison.df$GSPC) - min(Comparison.df$GSPC)),
+         IXIC = (IXIC - min(Comparison.df$IXIC)) / (max(Comparison.df$IXIC) - min(Comparison.df$IXIC))) %>%
+  pivot_longer(cols = c(2:5), names_to = 'Index', values_to = 'Close') %>%
+  filter(Date > min(Comparison.df$Date)) -> Comparison.df

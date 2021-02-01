@@ -53,7 +53,7 @@ shinyServer(function(input, output){
     })
     
     output$postMin <- renderInfoBox({
-
+        
         min_price = round(min(equalWeight.df$Close[equalWeight.df$Status == 'Post-Merger']), 2)
         min_company = equalWeight.df$Ticker[equalWeight.df$Close == min_price]
         valueBox(min_price, min_company, icon = icon('thumbs-down'), color = 'red')
@@ -98,7 +98,7 @@ shinyServer(function(input, output){
         min_ticker = merged.df$`Post-SPAC.Ticker`[merged.df$Merger.Timeline.in.Days == min_time]
         valueBox(paste(min_time, 'Days'), min_ticker, icon = icon('calendar-alt'), width = 4, color = 'orange')
     })
-
+    
     output$avgTime <- renderInfoBox({
         avg_time = mean(merged.df$Merger.Timeline.in.Days)
         valueBox(paste(round(avg_time), 'Days'), 'Average', icon = icon('calendar-alt'), width = 4, color = 'orange')
@@ -124,6 +124,24 @@ shinyServer(function(input, output){
             scale_y_continuous(labels = scales::dollar)
         
     })
-
+    
+    output$indexComps <- renderPlot({
+        
+        Comparison.df %>%
+            ggplot(aes(x = Date, y = Close, color = Index)) +
+            geom_point(stat = 'identity') +
+            geom_smooth(method = 'lm', se = F) +
+            theme_bw() +
+            labs(x = 'Date', y = '', title = 'My SPAC Index vs Market Indices', subtitle = 'Rescaled between Min and Max of Indices') +
+            scale_color_manual(name = 'Indices',
+                               values = c('DJI' = 'lightsteelblue3',
+                                          'GSPC' = 'lightsalmon3',
+                                          'IXIC' = 'darkseagreen4',
+                                          'SPAC.Index' = 'red'),
+                               labels = c('Dow Jones', 'S&P 500', 'Nasdaq', 'SPAC'))
+            
+        
+    })
+    
     
 })
