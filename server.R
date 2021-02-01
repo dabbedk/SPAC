@@ -15,7 +15,6 @@ shinyServer(function(input, output){
             theme_bw() +
             labs(x = 'Year', y = 'Volume', title = 'Daily Trading Volume') +
             scale_y_continuous(labels = scales::comma)
-        
     })
     
     output$dailySPACIndex <- renderPlot({
@@ -27,7 +26,8 @@ shinyServer(function(input, output){
                  y = 'Closing Price',
                  title = 'My SPAC Index Performance',
                  subtitle = 'Equal Weighted Index')+
-            scale_y_continuous(labels = scales::dollar)
+            scale_y_continuous(labels = scales::dollar) +
+            scale_x_date(date_breaks = 'months', date_labels = '%b-%y')
         
     })
     
@@ -121,7 +121,8 @@ shinyServer(function(input, output){
             scale_color_hue(l = 50) +
             theme_bw() +
             labs(x = 'Date', y = 'Closing Price', title = 'Price Movement Pre- vs Post-Merger') +
-            scale_y_continuous(labels = scales::dollar)
+            scale_y_continuous(labels = scales::dollar) +
+            scale_x_date(date_breaks = 'months', date_labels = '%b-%y')
         
     })
     
@@ -138,7 +139,8 @@ shinyServer(function(input, output){
                                           'GSPC' = 'lightsalmon3',
                                           'IXIC' = 'darkseagreen4',
                                           'SPAC.Index' = 'red'),
-                               labels = c('Dow Jones', 'S&P 500', 'Nasdaq', 'SPAC'))
+                               labels = c('Dow Jones', 'S&P 500', 'Nasdaq', 'SPAC')) +
+            scale_x_date(date_breaks = 'months', date_labels = '%b-%y')
             
         
     })

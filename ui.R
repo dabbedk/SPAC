@@ -5,22 +5,34 @@ shinyUI(dashboardPage(
     
     dashboardSidebar(
         sidebarMenu(
-            menuItem('Intro', tabName = 'intro', icon = icon('info-circle')),
+            menuItem('About', tabName = 'intro', icon = icon('info-circle')),
             
-            menuItem('General', tabName = 'general', icon = icon('search-dollar')),
+            menuItem('Negotiations', tabName = 'general', icon = icon('search-dollar')),
             
-            menuItem('Price Movement', tabName = 'price', icon = icon('poll')),
+            menuItem('Price by Ticker', tabName = 'price', icon = icon('poll')),
             
-            menuItem('SPAC Index', tabName = 'spacIndex', icon = icon('layer-group')),
+            menuItem('My SPAC Index', tabName = 'spacIndex', icon = icon('layer-group')),
             
-            menuItem('Index Comparison', tabName = 'indexComp', icon = icon('layer-group'))
+            menuItem('Indices', tabName = 'indexComp', icon = icon('search-dollar'))
         )
     ),
     
     dashboardBody(
         tabItems(
             tabItem(tabName = 'intro',
-                    'about me and intro to project'
+                    
+                    fluidRow(column(8, align = 'center',
+                                    box(h1('Analyzing 2020: Year of the SPAC')))),
+                    
+                    fluidRow(column(8,
+                                    box(h3('This app was created to take a deeper look at the 2020 stock market trend of companies entering the public market through speical purpose acquisition companies (SPAC).
+                                        As a cheaper and faster alternative to raise capital than a initial public offering (IPO), hundreds of these \'blank check companies\' raised multi-billion dollars from investors.'),
+                                        br(), br(),
+                                        tags$img(src = 'introimage.jpg', width = '400px', height = '400px'),
+                                        br(), br(),
+                                        h3('I researched 71 successful mergers between SPACs and their respective target companies to assess their performance both individually and cumulatively.
+                                        You will be able to assess the performance of each SPAC pre- and post-merger, and compare the performance of the group through a mock \'SPAC Index\' that I created to compare against popular market indices.')))),
+    
             ),
             
             tabItem(tabName = 'general',
