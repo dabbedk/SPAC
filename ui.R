@@ -23,18 +23,34 @@ shinyUI(dashboardPage(
         tabItems(
             tabItem(tabName = 'intro',
                     
-                    fluidRow(column(8, align = 'center',
-                                    box(h4('Analyzing 2020: Year of the SPAC'), width = 12))),
+                    fluidRow(box(h4('Analyzing 2020: Year of the SPAC'), width = 12, align = 'center')),
                     
-                    fluidRow(column(8, align = 'center',
-                                    box(h6('This app was created to take a deeper look at the 2020 stock market trend of companies entering the public market through special purpose acquisition companies (SPAC).
-                                        As a cheaper and faster alternative to raise capital than a traditional initial public offering (IPO), hundreds of these \'blank check companies\' raised multi-billion dollars from investors.'),
-                                        br(), br(),
-                                        tags$img(src = 'introimage.jpg', width = '200px', height = '200px'),
-                                        br(), br(),
-                                        h6('I researched 71 successful SPAC mergers in 2020 - Jan/2021 to assess their performance both individually and cumulatively.
-                                        You will be able to assess the performance of each SPAC pre- and post-merger, and compare the performance of the group through a mock \'SPAC Index\' that I created to compare against popular market indices.'),
-                                        width = 12))),
+                    fluidRow(box(h5('This app was created to take a deeper look at the 2020 stock market trend of companies entering the public market through special purpose acquisition companies (SPAC).
+                                    As a cheaper and faster alternative to raise capital than a traditional initial public offering (IPO), hundreds of these \'blank check companies\' raised multi-billion dollars from investors.'),
+                                    br(), br(),
+                                    tags$img(src = 'introimage.jpg', width = '300px', height = '300px',
+                                             style="display: block; margin-left: auto; margin-right: auto;"),
+                                    br(), br(),
+                                    h5('I researched 71 successful SPAC mergers in 2020 - Jan/2021 to assess their performance both individually and cumulatively.
+                                    You will be able to assess the performance of each SPAC pre- and post-merger, and compare the performance of the group through a mock \'SPAC Index\' that I created to compare against popular market indices.'),
+                                    br(), br(),
+                                    width = 6, title = 'Background', solidHeader = T, status = 'primary'),
+
+                             box(h5('Through my research, I can generally summarize:'),
+                                    br(),
+                                    ('- Target companies have an average enterprise value of $2.6B, and aren\'t only for small companies seeking public funding. The highest evaluation in my dataset was at $11B. Well-known companies, such as DraftKings and Virgin Galactic, have opted for the SPAC merger route and are helping shed the negative stigma behind SPAC acquisition mergers.'),
+                                    br(),br(),
+                                    ('- Investors are able to exercise redemption options at the SPAC IPO price of $10.00. Due to this \'safety net\', it is very rare that stocks will fall below this price before the merger.'),
+                                    br(),br(),
+                                    ('- Merger timelines average 20 months, and some may be even longer if shareholders need to vote for an extension. Due to this fact, the dilemma for investors will be time. While there is limited downside pre-merger, price can remain stagnant for months, if not years, without any news about the merger.'),
+                                    br(),br(),
+                                    ('- Once the merger is complete, the price movement is vastly different to each other. Some companies are wildly successful, while others faced sell-offs to well below the $10 \'safety net\' that disappeared after the merger.'),
+                                    br(),br(),
+                                    ('- While the price movement of my hypothetical SPAC index can be seen as competitive with major market indices, there is no indication on whether its momentum is independent or related to an overall market trend.'),
+                                 br(), br(), br(), br(),
+                                 h5(strong('Disclaimer: I am not a financial advisor, and any research provided here should not be construed as personal investment advice. Please conduct your own due diligence before making any investment decisions.')),
+                                
+                                 width = 6, title = 'Results', solidHeader = T, status = 'primary')),
     
             ),
             
